@@ -30,7 +30,12 @@ async function run() {
             res.send(services);
         });
 
-        //---all users-start----
+        app.get('/user', async (req, res) => {
+            const users = await userCollection.find().toArray();
+            res.send(users)
+        })
+
+        //--- users-start----
         app.put('/user/:email', async (req, res) => {
             const email = req.params.email;
             const user = req.body
