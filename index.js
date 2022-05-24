@@ -20,6 +20,7 @@ async function run() {
         const serviceCollection = client.db('manufacture_dwell').collection('services')
         const myReviewCollection = client.db('manufacture_dwell').collection('myReviews')
         const userCollection = client.db('manufacture_dwell').collection('users')
+        const orderCollection = client.db('manufacture_dwell').collection('orders')
 
 
         app.get('/service', async (req, res) => {
@@ -59,7 +60,7 @@ async function run() {
             const options = { upsert: true };
             const updatedDoc = {
                 $set: {
-                    quantity: updatedService.quantity,
+                    availableQuantity: updatedService.availableQuantity,
                 },
             };
             const result = await serviceCollection.updateOne(
@@ -67,6 +68,13 @@ async function run() {
                 updatedDoc,
                 options
             );
+            res.send(result);
+        });
+
+        //----order----
+        app.post("/orders", async (req, res) => {
+            const order = req.body;
+            const result = await orderCollection.insertOne(order);
             res.send(result);
         });
 
