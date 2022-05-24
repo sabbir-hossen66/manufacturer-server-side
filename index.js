@@ -18,12 +18,27 @@ async function run() {
         await client.connect();
         const serviceCollection = client.db('manufacture_dwell').collection('services')
         const myReviewCollection = client.db('manufacture_dwell').collection('myReviews')
+        const userCollection = client.db('manufacture_dwell').collection('users')
+
 
         app.get('/service', async (req, res) => {
             const query = {};
             const cursor = serviceCollection.find(query);
             const services = await cursor.toArray();
             res.send(services);
+        });
+
+        //---all users-start----
+        app.put('/user/:email', async (req, res) => {
+            const email = req.params.email;
+            const user = req.body
+            const filter = { email: email }
+            const options = { upsert: true }
+            const updatedDoc = {
+                $set: user,
+            };
+            const result = await userCollection.updateOne(filter, updatedDoc, options)
+            res.send(result)
         })
         // showing detail
         app.get('/service/:id', async (req, res) => {
