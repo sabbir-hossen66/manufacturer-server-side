@@ -17,6 +17,7 @@ async function run() {
     try {
         await client.connect();
         const serviceCollection = client.db('manufacture_dwell').collection('services')
+        const myReviewCollection = client.db('manufacture_dwell').collection('myReviews')
 
         app.get('/service', async (req, res) => {
             const query = {};
@@ -51,6 +52,19 @@ async function run() {
             );
             res.send(result);
         });
+
+        //add review dashboard post user review
+        app.post('/myReview', async (req, res) => {
+            const review = req.body;
+            const result = await myReviewCollection.insertOne(review);
+            res.send(result);
+        })
+
+        //add review dashboard get all review
+        app.get('/myReview', async (req, res) => {
+            const reviews = await myReviewCollection.find().toArray()
+            res.send(reviews)
+        })
 
     }
     finally {
