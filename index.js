@@ -143,7 +143,8 @@ async function run() {
         });
 
         app.get("/orders", async (req, res) => {
-            const orders = await orderCollection.find().toArray();
+            const query = {}
+            const orders = await orderCollection.find(query).toArray();
             res.send(orders);
         });
 
