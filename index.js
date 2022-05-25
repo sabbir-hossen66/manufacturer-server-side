@@ -23,6 +23,7 @@ function verifyJWT(req, res, next) {
     const token = authHeader.split(' ')[1];
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, function (err, decoded) {
         if (err) {
+            console.log(err);
             return res.status(403).send({ message: 'Forbidden access' })
         }
         req.decoded = decoded;
@@ -73,7 +74,7 @@ async function run() {
                 $set: user,
             };
             const result = await userCollection.updateOne(filter, updatedDoc, options);
-            const token = jwt.sign({ email: email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' })
+            const token = jwt.sign({ email: email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1d' })
             res.send({ result, token });
         })
 
@@ -103,6 +104,14 @@ async function run() {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
             const result = await serviceCollection.findOne(query);
+            res.send(result);
+        });
+
+
+        // post / add parts
+        app.post('/service', async (req, res) => {
+            const newService = req.body;
+            const result = await serviceCollection.insertOne(newService);
             res.send(result);
         });
 
@@ -137,6 +146,16 @@ async function run() {
             const orders = await orderCollection.find().toArray();
             res.send(orders);
         });
+
+
+        app.get("/order/:email", async (req, res) => {
+            const email = req.params.email;
+            const query = { email: email }
+            const orders = await orderCollection.find(query).toArray();
+            res.send(orders);
+        });
+
+
 
         //---order delete
         app.delete("/orders/:id", async (req, res) => {
