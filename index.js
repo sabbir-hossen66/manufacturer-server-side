@@ -151,7 +151,7 @@ async function run() {
         });
 
 
-        app.get('/orders/:id', verifyJWT, async (req, res) => {
+        app.get('/orders/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
             const order = await orderCollection.findOne(query)
@@ -166,24 +166,6 @@ async function run() {
             res.send(orders);
         });
 
-        //----profile 
-
-        // app.put('/updateProfile/:email', async (req, res) => {
-        //     const profileData = req.body;
-        //     const email = req.params.email;
-        //     const filter = { email: email }
-        //     const options = { upsert: true }
-        //     const updatedDoc = {
-        //         $set: profileData
-
-        //     }
-        //     const updatedUserProfile = await profileCollection.updateOne(filter, updatedDoc, options)
-        //     res.send(updatedUserProfile)
-
-
-        // })
-
-        //profile post method
 
 
         app.post('/updateProfile', async (req, res) => {
