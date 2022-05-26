@@ -206,19 +206,19 @@ async function run() {
 
         //---manage product get method
 
-        // app.get('/parts', async (req, res) => {
-        //     const parts = await serviceCollection.find().toArray();
-        //     res.send(parts);
-        // });
+        app.get('/parts', async (req, res) => {
+            const parts = await serviceCollection.find().toArray();
+            res.send(parts);
+        });
 
         //---manage product delete method:
 
-        // app.delete("/parts/:id", async (req, res) => {
-        //     const id = req.params.id;
-        //     const query = { _id: ObjectId(id) };
-        //     const result = await serviceCollection.deleteOne(query);
-        //     res.send(result);
-        // });
+        app.delete("/parts/:id", async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await serviceCollection.deleteOne(query);
+            res.send(result);
+        });
 
 
     }
