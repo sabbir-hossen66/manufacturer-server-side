@@ -211,7 +211,15 @@ async function run() {
         app.get('/myReview', async (req, res) => {
             const reviews = await myReviewCollection.find().toArray()
             res.send(reviews)
-        })
+        });
+
+        //manage item delete
+        app.delete("/orders/:id", async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await orderCollection.deleteOne(query);
+            res.send(result);
+        });
 
     }
     finally {
