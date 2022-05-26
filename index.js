@@ -43,6 +43,7 @@ async function run() {
         const userCollection = client.db('manufacture_dwell').collection('users')
         const orderCollection = client.db('manufacture_dwell').collection('orders')
         const profileCollection = client.db('manufacture_dwell').collection('profiles')
+        // const paymentCollection = client.db('manufacture_dwell').collection('payments')
 
 
         app.get('/service', async (req, res) => {
@@ -149,7 +150,7 @@ async function run() {
             res.send(orders);
         });
 
-        //---payment
+
         app.get('/orders/:id', verifyJWT, async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectID(id) };
