@@ -150,7 +150,7 @@ async function run() {
         });
 
         //---payment
-        app.get('/order/:id', verifyJWT, async, (req, res) => {
+        app.get('/order/:id', verifyJWT, async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectID(id) };
             const order = await orderCollection.findOne(query)
@@ -183,6 +183,7 @@ async function run() {
         // })
 
         //profile post method
+
 
         app.post('/updateProfile', async (req, res) => {
             const profile = req.body;
