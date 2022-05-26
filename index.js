@@ -167,20 +167,20 @@ async function run() {
 
         //----profile 
 
-        app.put('/updateProfile/:email', async (req, res) => {
-            const profileData = req.body;
-            const email = req.params.email;
-            const filter = { email: email }
-            const options = { upsert: true }
-            const updatedDoc = {
-                $set: profileData
+        // app.put('/updateProfile/:email', async (req, res) => {
+        //     const profileData = req.body;
+        //     const email = req.params.email;
+        //     const filter = { email: email }
+        //     const options = { upsert: true }
+        //     const updatedDoc = {
+        //         $set: profileData
 
-            }
-            const updatedUserProfile = await profileCollection.updateOne(filter, updatedDoc, options)
-            res.send(updatedUserProfile)
+        //     }
+        //     const updatedUserProfile = await profileCollection.updateOne(filter, updatedDoc, options)
+        //     res.send(updatedUserProfile)
 
 
-        })
+        // })
 
         //profile post method
 
