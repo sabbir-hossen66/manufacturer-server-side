@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const jwt = require('jsonwebtoken')
 require('dotenv').config();
-const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId, ObjectID } = require('mongodb');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -42,6 +42,7 @@ async function run() {
         const myReviewCollection = client.db('manufacture_dwell').collection('myReviews')
         const userCollection = client.db('manufacture_dwell').collection('users')
         const orderCollection = client.db('manufacture_dwell').collection('orders')
+        const profileCollection = client.db('manufacture_dwell').collection('profiles')
 
 
         app.get('/service', async (req, res) => {
@@ -148,6 +149,14 @@ async function run() {
             res.send(orders);
         });
 
+        //---payment
+        app.get('/order/:id', verifyJWT, async, (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectID(id) };
+            const order = await orderCollection.findOne(query)
+            res.send(order)
+        })
+
 
         app.get("/order/:email", async (req, res) => {
             const email = req.params.email;
@@ -156,6 +165,30 @@ async function run() {
             res.send(orders);
         });
 
+        //----profile 
+
+        app.put('/updateProfile/:email', async (req, res) => {
+            const profileData = req.body;
+            const email = req.params.email;
+            const filter = { email: email }
+            const options = { upsert: true }
+            const updatedDoc = {
+                $set: profileData
+
+            }
+            const updatedUserProfile = await profileCollection.updateOne(filter, updatedDoc, options)
+            res.send(updatedUserProfile)
+
+
+        })
+
+        //profile post method
+
+        app.post('/updateProfile', async (req, res) => {
+            const profile = req.body;
+            const result = await profileCollection.insertOne(profile)
+            res.send(result)
+        })
 
 
         //---order delete
