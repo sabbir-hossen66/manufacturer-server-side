@@ -119,7 +119,7 @@ async function run() {
 
         // ---quantity related---
 
-        app.put("/service/:id", async (req, res) => {
+        app.put('/service/:id', async (req, res) => {
             const id = req.params.id;
             const updatedService = req.body;
             const query = { _id: ObjectId(id) };
@@ -138,13 +138,13 @@ async function run() {
         });
 
         //----order----
-        app.post("/orders", async (req, res) => {
+        app.post('/orders', async (req, res) => {
             const order = req.body;
             const result = await orderCollection.insertOne(order);
             res.send(result);
         });
 
-        app.get("/orders", async (req, res) => {
+        app.get('/orders', async (req, res) => {
             const query = {}
             const orders = await orderCollection.find(query).toArray();
             res.send(orders);
@@ -159,7 +159,7 @@ async function run() {
         })
 
 
-        app.get("/orders/:email", async (req, res) => {
+        app.get('/orders/:email', async (req, res) => {
             const email = req.params.email;
             const query = { email: email }
             const orders = await orderCollection.find(query).toArray();
@@ -194,7 +194,7 @@ async function run() {
 
 
         //---order delete
-        app.delete("/orders/:id", async (req, res) => {
+        app.delete('/orders/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
             const result = await orderCollection.deleteOne(query);
@@ -215,12 +215,27 @@ async function run() {
         });
 
         //manage item delete
-        app.delete("/orders/:id", async (req, res) => {
+        app.delete('/orders/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
             const result = await orderCollection.deleteOne(query);
             res.send(result);
         });
+
+        //---manage product get method
+        app.get('/parts', async (req, res) => {
+            const parts = await serviceCollection.find().toArray();
+            res.send(parts);
+        });
+
+        //---manage product delete method:
+        app.delete("/parts/:id", async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await serviceCollection.deleteOne(query);
+            res.send(result);
+        });
+
 
     }
     finally {
